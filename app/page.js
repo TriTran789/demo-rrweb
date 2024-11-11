@@ -1,4 +1,5 @@
 "use client"
+import { connectToDatabase } from "@/lib/moongose";
 import { useCallback, useEffect, useState } from "react";
 import * as rrweb from "rrweb";
 
@@ -231,6 +232,7 @@ function App() {
 			setStopFn(undefined)
 		}
 	};
+	console.log("events", events)
 	return <>
 		{step == 0 && <div className="flex flex-col w-full h-screen justify-center items-center pt-5">
 			<h2 className="font-semibold text-xl mb-4">Choose your symbol</h2>
