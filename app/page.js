@@ -209,21 +209,21 @@ function App() {
 					if (turn == 1) {
 						setTimeout(() => {
 							bestMove();
-						}, delay);	
+						}, delay);
 					}
 				}
 			}
 		}
 	}, [turn, board, playing, bestMove])
 
-    return <>
+	return <>
 		{step == 0 && <div className="flex flex-col w-full h-screen justify-center items-center pt-5">
 			<h2 className="font-semibold text-xl mb-4">Choose your symbol</h2>
 			<div className="grid grid-cols-2 gap-2">
-				<button className="px-4 py-4 rounded-lg text-3xl font-medium bg-gray-500/50 hover:bg-gray-500 flex items-center justify-center" onClick={() => {setSymbols({"1": "O", "-1": "X"}); handleNextStep()}}>
+				<button className="px-4 py-4 rounded-lg text-3xl font-medium bg-gray-500/50 hover:bg-gray-500 flex items-center justify-center" onClick={() => { setSymbols({ "1": "O", "-1": "X" }); handleNextStep() }}>
 					<svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" viewBox="0 0 24 24"><path fill="currentColor" d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path></svg>
 				</button>
-				<button className="px-4 py-4 rounded-lg text-3xl font-medium bg-gray-500/50 hover:bg-gray-500 flex items-center justify-center" onClick={() => {setSymbols({"1": "X", "-1": "O"}); handleNextStep()}}>
+				<button className="px-4 py-4 rounded-lg text-3xl font-medium bg-gray-500/50 hover:bg-gray-500 flex items-center justify-center" onClick={() => { setSymbols({ "1": "X", "-1": "O" }); handleNextStep() }}>
 					<svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10s10-4.47 10-10S17.53 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8"></path></svg>
 				</button>
 			</div>
@@ -251,13 +251,13 @@ function App() {
 								setBoard(newBoard);
 								setTurn(1);
 							}
-						}}>{showCell(cell) == "X" ? 
+						}}>{showCell(cell) == "X" ?
 							<svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" viewBox="0 0 24 24"><path fill="currentColor" d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path></svg>
 							:
-							showCell(cell) == "O" ? <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10s10-4.47 10-10S17.53 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8"></path></svg> 
-							: 
-							<div className="w-12 h-12"></div>
-						}</button>
+							showCell(cell) == "O" ? <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10s10-4.47 10-10S17.53 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8"></path></svg>
+								:
+								<div className="w-12 h-12"></div>
+							}</button>
 					})}
 				</div>
 				<div className="flex gap-2">
