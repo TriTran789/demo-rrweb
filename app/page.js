@@ -1,5 +1,6 @@
 "use client"
 import { useCallback, useEffect, useState } from "react";
+import * as rrweb from "rrweb";
 
 function App() {
 	const [step, setStep] = useState(0); // 0 = choose symbol, 1 = choose who starts, 2 = play
@@ -10,7 +11,8 @@ function App() {
 	const [winner, setWinner] = useState(null);
 	const [symbols, setSymbols] = useState({});
 	const [winnerLine, setWinnerLine] = useState([]);
-
+	const [events, setEvents] = useState([])
+	const [stopFn, setStopFn] = useState(undefined)
 	const delay = process.env.VITE_AI_DELAY ?? 500; // AI delay miliseconds
 	const usingAB = process.env.VITE_USING_AB ?? true; // Using Alpha-Beta Pruning
 
@@ -215,15 +217,28 @@ function App() {
 			}
 		}
 	}, [turn, board, playing, bestMove])
-
+	const handleRecord = () => {
+		let rrwebHandler = rrweb.record({
+			emit(event) {
+				setEvents(events => [...events, event])
+			},
+		});
+		setStopFn(() => rrwebHandler)
+	}
+	const handleStop = () => {
+		if (stopFn) {
+			stopFn();
+			setStopFn(undefined)
+		}
+	};
 	return <>
 		{step == 0 && <div className="flex flex-col w-full h-screen justify-center items-center pt-5">
 			<h2 className="font-semibold text-xl mb-4">Choose your symbol</h2>
 			<div className="grid grid-cols-2 gap-2">
-				<button className="px-4 py-4 rounded-lg text-3xl font-medium bg-gray-500/50 hover:bg-gray-500 flex items-center justify-center" onClick={() => { setSymbols({ "1": "O", "-1": "X" }); handleNextStep() }}>
+				<button className="px-4 py-4 rounded-lg text-3xl font-medium bg-gray-500/50 hover:bg-gray-500 flex items-center justify-center" onClick={() => { setSymbols({ "1": "O", "-1": "X" }); handleNextStep(); handleRecord() }}>
 					<svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" viewBox="0 0 24 24"><path fill="currentColor" d="M18.3 5.71a.996.996 0 0 0-1.41 0L12 10.59L7.11 5.7A.996.996 0 1 0 5.7 7.11L10.59 12L5.7 16.89a.996.996 0 1 0 1.41 1.41L12 13.41l4.89 4.89a.996.996 0 1 0 1.41-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4"></path></svg>
 				</button>
-				<button className="px-4 py-4 rounded-lg text-3xl font-medium bg-gray-500/50 hover:bg-gray-500 flex items-center justify-center" onClick={() => { setSymbols({ "1": "X", "-1": "O" }); handleNextStep() }}>
+				<button className="px-4 py-4 rounded-lg text-3xl font-medium bg-gray-500/50 hover:bg-gray-500 flex items-center justify-center" onClick={() => { setSymbols({ "1": "X", "-1": "O" }); handleNextStep(); handleRecord() }}>
 					<svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10s10-4.47 10-10S17.53 2 12 2m0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8s8 3.58 8 8s-3.58 8-8 8"></path></svg>
 				</button>
 			</div>
@@ -262,7 +277,7 @@ function App() {
 				</div>
 				<div className="flex gap-2">
 					<button className="px-4 py-2 rounded-lg text-3xl font-medium bg-gray-500/50 hover:bg-gray-500 flex items-center justify-center mt-4 mx-auto" onClick={handlePrevStep}>Back</button>
-					{winner && <button className="px-4 py-2 rounded-lg text-3xl font-medium bg-gray-500/50 hover:bg-gray-500 flex items-center justify-center mt-4 mx-auto" onClick={handleRestart}>Restart</button>}
+					{winner && <button className="px-4 py-2 rounded-lg text-3xl font-medium bg-gray-500/50 hover:bg-gray-500 flex items-center justify-center mt-4 mx-auto" onClick={() => { handleRestart(); handleStop(); }}>Restart</button>}
 				</div>
 			</div>
 		</div>}
