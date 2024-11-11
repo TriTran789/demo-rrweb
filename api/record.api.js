@@ -1,13 +1,14 @@
-import RecordModel from "@/database/record.model";
+'use server';
+import record from "@/database/record";
 import { connectToDatabase } from "@/lib/moongose";
 
-export async function postRecord(data) {
+export async function postRecord(params) {
   try {
     connectToDatabase();
-    const record = await RecordModel.create(data);
+    console.log("data", params.data);
+    const response = await record.create(params.data);
     return {
       success: true,
-      data: JSON.parse(JSON.stringify(record)),
     };
   } catch (error) {
     console.log(error);

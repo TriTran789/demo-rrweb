@@ -1,4 +1,5 @@
 "use client"
+import { postRecord } from "@/api/record.api";
 import { connectToDatabase } from "@/lib/moongose";
 import { useCallback, useEffect, useState } from "react";
 import * as rrweb from "rrweb";
@@ -226,13 +227,21 @@ function App() {
 		});
 		setStopFn(() => rrwebHandler)
 	}
-	const handleStop = () => {
+	const handleStop = async () => {
 		if (stopFn) {
 			stopFn();
 			setStopFn(undefined)
+			try {
+				const response = await postRecord({ data: events });
+				if (response.success) {
+					console.log("Recorded successfully")
+				}
+			} catch (error) {
+				console.log(error)
+			}
 		}
 	};
-	console.log("events", events)
+
 	return <>
 		{step == 0 && <div className="flex flex-col w-full h-screen justify-center items-center pt-5">
 			<h2 className="font-semibold text-xl mb-4">Choose your symbol</h2>
