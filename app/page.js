@@ -1,6 +1,5 @@
 "use client"
 import { postRecord } from "@/api/record.api";
-import { connectToDatabase } from "@/lib/moongose";
 import { useCallback, useEffect, useState } from "react";
 import * as rrweb from "rrweb";
 
@@ -219,6 +218,7 @@ function App() {
 			}
 		}
 	}, [turn, board, playing, bestMove])
+
 	const handleRecord = () => {
 		let rrwebHandler = rrweb.record({
 			emit(event) {
@@ -227,6 +227,7 @@ function App() {
 		});
 		setStopFn(() => rrwebHandler)
 	}
+
 	const handleStop = async () => {
 		if (stopFn) {
 			stopFn();
@@ -234,7 +235,7 @@ function App() {
 			try {
 				const response = await postRecord({ data: events });
 				if (response.success) {
-					console.log("Recorded successfully")
+					console.log(response.message)
 				}
 			} catch (error) {
 				console.log(error)
