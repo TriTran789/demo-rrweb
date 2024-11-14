@@ -1,6 +1,7 @@
 "use client";
 import History from "@/components/History";
 import Link from "next/link";
+import { postRecord } from "@/api/record.api";
 import { useCallback, useEffect, useState } from "react";
 import * as rrweb from "rrweb";
 
